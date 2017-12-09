@@ -9,13 +9,16 @@ The convolutional network is trained in a supervised manner using backpropagatio
 
 ![Training](/img/training.PNG)
 
-### Architecture
 
-![Architecture](/img/net_architecture.png)
+### Architecture
+The architecture of the convolutional net takes RGB images as input in a first layer. After normalization, the problem dimension is subsequentially reduced by a number of convolutional layers until the filters are sufficient to extract actions by regression from them. The regression is performed by a stack of fully connected layers.
+
+![Architecture](/img/net_architecture.PNG)
 
 ### Prediction
+After the network has been successfully trained, one predicts actions only by the frontal input image.
 
-![Prediction](/img/prediction.png)
+![Prediction](/img/prediction.PNG)
 
 ## The Environment
 As environment we use a car driving simulation built by Udacity. The simulation can be found on their GitHub if you follow this [link](https://github.com/udacity/self-driving-car-sim "Link to GitHub").
