@@ -7,7 +7,7 @@ Our network architecture for the self-driving car is based on the [End to End Le
 ### Training
 The convolutional network is trained in a supervised manner using backpropagation. It therefore predicts the steering angle and the acceleration from the recorded input images. Then, the error between predicted actions and actions, which correspond to the recorded input images, is computed.
 
-![Training](/img/training.png)
+![Training](/img/training.PNG)
 
 ### Architecture
 
