@@ -2,7 +2,7 @@
 In this short project we aim to implement a self-driving car algorithm within a simulation environment. 
 
 ## The Environment
-As environment we use a car driving simulation built by Udacity. The simulation can be found on their GitHub if you follow this [link](https://github.com/udacity/self-driving-car-sim "Link to GitHub").
+As environment we use a car driving simulation built by Udacity. The simulation can be found on their GitHub if you follow this [link](https://github.com/udacity/self-driving-car-sim "Link to GitHub"). To use the simulation we further followed these [instructions](https://github.com/udacity/CarND-Behavioral-Cloning-P3 "Link to Instructions")
 
 ## The Data
 The data to train the neural net can be simply obtained within the given environment. Therefore we start the game in training mode
