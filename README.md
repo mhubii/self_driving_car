@@ -1,5 +1,17 @@
 # Self-Driving Car
-In this short project we aim to implement a self-driving car algorithm within a simulation environment.
+In this short project we aim to implement a self-driving car algorithm within a simulation environment. 
+
+## The Environment
+As environment we use a car driving simulation built by Udacity. The simulation can be found on their GitHub if you follow this [link](https://github.com/udacity/self-driving-car-sim "Link to GitHub").
+
+## The Data
+The data to train the neural net can be simply obtained within the given environment. Therefore we start the game in training mode
+
+![Game Mode](/img/game_mode.PNG)
+
+and record the data within the game.
+
+![Game Racetrack](/img/game_racetrack.PNG)
 
 ## The Network
 Our network architecture for the self-driving car is based on the [End to End Learning for Self-Driving Cars](https://arxiv.org/pdf/1604.07316.pdf "Link to Paper") paper which was released by NVIDIA. Note that all of the following pictures are taken from the paper as well.
@@ -19,6 +31,3 @@ The architecture of the convolutional net takes RGB images as input in a first l
 After the network has been successfully trained, one predicts actions only by the frontal input image.
 
 ![Prediction](/img/prediction.PNG)
-
-## The Environment
-As environment we use a car driving simulation built by Udacity. The simulation can be found on their GitHub if you follow this [link](https://github.com/udacity/self-driving-car-sim "Link to GitHub").
