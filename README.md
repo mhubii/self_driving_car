@@ -7,7 +7,7 @@ As environment we use a car driving simulation built by Udacity. The simulation 
 ## The Data
 The data to train the neural net can be simply obtained within the given environment. Therefore we start the game in training mode
 
-![Game Mode](/img/game_mode.PNG)
+![Game Menu](/img/game_menu.PNG)
 
 and record the data within the game.
 
