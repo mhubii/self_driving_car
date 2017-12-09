@@ -1,4 +1,5 @@
-# Self Driving Car
+# Self-Driving Car
+In this short project we aim to implement a self-driving car algorithm within a simulation environment.
 
 ## The Network
 Our network architecture for the self-driving car is based on the [End to End Learning for Self-Driving Cars](https://arxiv.org/pdf/1604.07316.pdf Link to Paper) paper which was released by NVIDIA.
