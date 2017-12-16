@@ -1,44 +1,23 @@
-"""
-    Model of the behavioral cloning.
-"""
-
-import argparse
-import helper
-from helper import INPUT_SHAPE
-from sklearn.model_selection import train_test_split
-from keras.models import Sequential
-from keras.layers import Conv2D, Flatten, Dense
-from keras.optimizers import Adam
+import torch
+import torch.nn as nn
 
 
-def main():
-    """
-        Load data, build  and train model.
-    """
+class CNN(nn.Module):
+    """Convolutional neural net."""
+    def __init__(self):
+        super(CNN, self).__init__()
+        self.c1 = nn.Conv2d(in_channels=1, out_channels=5, kernel_size=5, stride=2)
+        self.c2 = nn.Conv2d(in_channels=5, out_channels=5, kernel_size=5, stride=2)
+        self.c3 = nn.Conv2d(in_channels=5, out_channels=5, kernel_size=5, stride=2)
+        self.c4 = nn.Conv2d(in_channels=5, out_channels=5, kernel_size=5, stride=2)
+        self.c5 = nn.Conv2d(in_channels=5, out_channels=5, kernel_size=5, stride=2)
+        self.fc1 = nn.Linear(in_features=())
+        self.fc2 = nn.Linear()
+        self.fc3 = nn.Linear()
 
-    # get command line arguments
-    parser = argparse.ArgumentParser(description='Behavioral Cloning Training Program')
-    parser.add_argument('-d', type=str, help='data directory', default='data', dest='data_dir')
-    parser.add_argument('-t', type=float, help='train size fraction', default=0.8, dest='train_size')
-    parser.add_argument('-l', type=float, help='learning rate', dest='learning_rate')
-    parser.add_argument('-s', type=int, help='samples per epoch', dest='samples_per_epoch')
-    parser.add_argument('-e', type=int, help='number of epochs', dest='epochs')
+    def forward(self, *input):
 
-    args = parser.parse_args()
 
-    # load the data
-    x, y = helper.load_data(args)
-    print(x)
-
-    # split it into train and validation set
-    x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=args.train_size, random_state=0)
-
-    # build model
-    model = build_model()
-
-    # train model
-
-    # save weights
 
 
 def build_model():
