@@ -86,6 +86,12 @@ def load_data(data_dir):
 
     image_paths = data_df[['center', 'left', 'right']].values
     steering_angles = data_df['steering'].values
+
+    steering_angles = np.stack((steering_angles, steering_angles, steering_angles), axis=1)
+
+    steering_angles = np.reshape(steering_angles, steering_angles.size)
+    image_paths = np.reshape(image_paths, image_paths.size)
+
     return image_paths, steering_angles
 
 

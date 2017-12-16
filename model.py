@@ -3,47 +3,58 @@ import torch.nn as nn
 
 
 class CNN(nn.Module):
-    """Convolutional neural net."""
-    def __init__(self):
+    """
+        Convolutional neural net for behavioural cloning.
+    """
+    def __init__(self, input_shape):
+        """
+            Initialize the CNN.
+        """
         super(CNN, self).__init__()
-        self.c1 = nn.Conv2d(in_channels=1, out_channels=5, kernel_size=5, stride=2)
-        self.c2 = nn.Conv2d(in_channels=5, out_channels=5, kernel_size=5, stride=2)
-        self.c3 = nn.Conv2d(in_channels=5, out_channels=5, kernel_size=5, stride=2)
-        self.c4 = nn.Conv2d(in_channels=5, out_channels=5, kernel_size=5, stride=2)
-        self.c5 = nn.Conv2d(in_channels=5, out_channels=5, kernel_size=5, stride=2)
-        self.fc1 = nn.Linear(in_features=())
-        self.fc2 = nn.Linear()
-        self.fc3 = nn.Linear()
+        self.features = nn.Sequential(
+            nn.Conv2d(3, 5, 5, 2),
+            nn.ReLU(),
+            nn.Conv2d(5, 5, 5, 2),
+            nn.ReLU(),
+            nn.Conv2d(5, 5, 5, 2),
+            nn.ReLU(),
+            nn.Conv2d(5, 5, 5, 2),
+            nn.ReLU(),
+            nn.Conv2d(5, 5, 5, 2),
+            nn.ReLU()
+        )
 
-    def forward(self, *input):
+        n = self._get_conv_output(input_shape)
 
+        self.classification = nn.Sequential(
+            nn.Linear(n, 100),
+            nn.ReLU(),
+            nn.Linear(100, 50),
+            nn.ReLU(),
+            nn.Linear(50, 10),
+            nn.ReLU(),
+            nn.Linear(10, 1)
+        )
 
+    def _get_conv_output(self, shape):
+        """
+            Determine the dimension of the feature space.
+        """
+        input = torch.autograd.Variable(torch.rand(shape))
+        output = self.features(input)
+        n = torch.numel(output)
+        return n
 
+    def forward(self, input):
+        """
+            Forward through the CNN.
+        """
+        # Convolutional layers for feature extraction.
+        output = self.features(input)
 
-def build_model():
-    model = Sequential()
-    model.add(Conv2D(filters=5, kernel_size=5, strides=(2, 2), activation='relu', input_shape=INPUT_SHAPE))
-    model.add(Conv2D(filters=5, kernel_size=5, strides=(2, 2), activation='relu'))
-    model.add(Conv2D(filters=5, kernel_size=5, strides=(2, 2), activation='relu'))
-    model.add(Conv2D(filters=5, kernel_size=3, activation='relu'))
-    model.add(Conv2D(filters=5, kernel_size=3, activation='relu'))
-    model.add(Flatten())
-    model.add(Dense(100, activation='relu'))
-    model.add(Dense(50, activation='relu'))
-    model.add(Dense(10, activation='relu'))
-    model.add(Dense(1))
+        # Flatten.
+        output = output.view(torch.numel(output))
 
-    model.summary()
-
-    return model
-
-
-def train_model(args, model, x_train, x_test, y_train, y_test):
-    model.compile(loss='mean_squared_error', optimizer=Adam(lr=args.learning_rate))
-
-    #model.fit_generator(batch_generator(),
-    #                    args.samples_per_epoch,
-    #                    args.epochs)
-
-if __name__ == '__main__':
-    main()
+        # Linear layers for classification.
+        output = self.classification(output)
+        return output
