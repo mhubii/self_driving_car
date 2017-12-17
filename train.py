@@ -25,16 +25,16 @@ def train():
     # Load, pre-process and augment data.
     data_set = utils.DataSetGenerator(data_dir=args.data_dir,
                                       transform=transforms.Compose([
-                                          utils.PreProcessData,
-                                          utils.AugmentData,
-                                          transforms.ToTensor()
+                                          utils.PreProcessData(),
+                                          utils.AugmentData(),
+                                          utils.ToTensor()
                                       ]))
 
     # Data loader for batch generation.
     data_loader = DataLoader(data_set, batch_size=args.batch_size)
 
     # Build model.
-    model = CNN(utils.INPUT_SHAPE)
+    model = CNN(utils.INPUT_SHAPE, args.batch_size)
 
     # Loss and optimizer.
     criterion = nn.MSELoss()

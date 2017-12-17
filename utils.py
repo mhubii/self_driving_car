@@ -1,11 +1,15 @@
 import pandas as pd
 import numpy as np
+import torch
 from torch.utils.data import Dataset
+import torchvision
 import cv2
+from skimage import io
 import os
 
+# INPUT_SHAPE as input for CNN.
 IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_CHANNELS = 64, 64, 3
-INPUT_SHAPE = (IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_CHANNELS)
+INPUT_SHAPE = (IMAGE_CHANNELS, IMAGE_HEIGHT, IMAGE_WIDTH)
 
 
 class DataSetGenerator(Dataset):
@@ -56,7 +60,7 @@ class PreProcessData(object):
 
 class AugmentData(object):
     """
-        Augment data and apply some simple checks.
+        Augment data.
     """
     def __call__(self, sample):
         img, steering_angle = sample['img'], sample['steering_angle']
@@ -65,6 +69,21 @@ class AugmentData(object):
         img, steering_angle = random_flip(img, steering_angle)
 
         return {'img': img, 'steering_angle': steering_angle}
+
+
+class ToTensor(object):
+    """
+        Convert data to tensor.
+    """
+    def __call__(self, sample):
+        img, steering_angle = sample['img'], sample['steering_angle']
+
+        # Change HxWxC to CxHxW.
+        img = np.swapaxes(img, 0, 2)
+        img = np.swapaxes(img, 1, 2)
+
+        return {'img': torch.from_numpy(img).float(),
+                'steering_angle': torch.FloatTensor([steering_angle])}
 
 
 def load_data(data_dir):
@@ -120,7 +139,7 @@ def load_image(data_dir, image_file):
     """
         Load RGB image from a file.
     """
-    return cv2.imread(os.path.join(os.getcwd(), data_dir, image_file))
+    return io.imread(os.path.join(os.getcwd(), data_dir, image_file))
 
 
 def crop(image):
