@@ -2,13 +2,13 @@ import pandas as pd
 import numpy as np
 import torch
 from torch.utils.data import Dataset
-import torchvision
-import cv2
-from skimage import io
+import skimage.exposure
+import skimage.transform
+import skimage.io
 import os
 
 # INPUT_SHAPE as input for CNN.
-IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_CHANNELS = 64, 64, 3
+IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_CHANNELS = 160, 320, 3
 INPUT_SHAPE = (IMAGE_CHANNELS, IMAGE_HEIGHT, IMAGE_WIDTH)
 
 
@@ -139,14 +139,13 @@ def load_image(data_dir, image_file):
     """
         Load RGB image from a file.
     """
-    return io.imread(os.path.join(os.getcwd(), data_dir, image_file))
+    return skimage.io.imread(os.path.join(os.getcwd(), data_dir, image_file))
 
 
 def crop(image):
     """
-        Crop of the sky and parts of the care since
-        it does not add useful information for the
-        training.
+        Crop of the sky since it does not add
+        useful information for the training.
     """
     return image[65:, :]
 
@@ -156,7 +155,7 @@ def resize(image):
         Resize the image size to the input format of
         the network.
     """
-    return cv2.resize(image, dsize=(IMAGE_WIDTH, IMAGE_HEIGHT))
+    return skimage.transform.resize(image, (IMAGE_HEIGHT, IMAGE_WIDTH), mode='reflect').copy()
 
 
 def random_brightness(image):
@@ -168,13 +167,7 @@ def random_brightness(image):
     """
 
     gamma = np.random.random_sample() + 0.5
-    inv_gamma = 1/gamma
-
-    # Build a lookup table mapping the pixel values
-    # [0, 255] to their adjusted gamma values.
-    table = np.array([((i/255.)**inv_gamma)*255
-                      for i in range(256)]).astype('uint8')
-    return cv2.LUT(image, table)
+    return skimage.exposure.adjust_gamma(image, gamma)
 
 
 def random_flip(image, steering_angle):
@@ -190,7 +183,7 @@ def random_flip(image, steering_angle):
     """
     choice = np.random.choice(2)
     if choice == 0:
-        return cv2.flip(image, 1), -steering_angle
+        return np.flip(image, axis=1).copy(), -steering_angle
     else:
         return image, steering_angle
 

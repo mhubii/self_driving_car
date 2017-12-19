@@ -45,7 +45,7 @@ class CNN(nn.Module):
         input = torch.rand(shape).unsqueeze(0)
         input = torch.autograd.Variable(input)
         output = self.features(input)
-        n = torch.numel(output)
+        n = output.numel()
         return n
 
     def forward(self, input):
@@ -56,7 +56,7 @@ class CNN(nn.Module):
         output = self.features(input)
 
         # Flatten.
-        output = output.view(self.batch_size, int(torch.numel(output)/self.batch_size))
+        output = output.view(self.batch_size, int(output.numel()/self.batch_size))
 
         # Linear layers for classification.
         output = self.classification(output)

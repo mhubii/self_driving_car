@@ -31,7 +31,7 @@ def train():
                                       ]))
 
     # Data loader for batch generation.
-    data_loader = DataLoader(data_set, batch_size=args.batch_size)
+    data_loader = DataLoader(data_set, batch_size=args.batch_size, drop_last=True)
 
     # Build model.
     model = CNN(utils.INPUT_SHAPE, args.batch_size)
@@ -47,7 +47,7 @@ def train():
             steering_angle = Variable(sample['steering_angle'])
             optimizer.zero_grad()
             steering_angle_out = model(img)
-            loss = criterion(steering_angle, steering_angle_out)
+            loss = criterion(steering_angle_out, steering_angle)
             loss.backward()
             optimizer.step()
 
