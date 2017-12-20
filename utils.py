@@ -5,10 +5,11 @@ from torch.utils.data import Dataset
 import skimage.exposure
 import skimage.transform
 import skimage.io
+from cv2 import flip
 import os
 
 # INPUT_SHAPE as input for CNN.
-IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_CHANNELS = 160, 320, 3
+IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_CHANNELS = 95, 320, 3
 INPUT_SHAPE = (IMAGE_CHANNELS, IMAGE_HEIGHT, IMAGE_WIDTH)
 
 
@@ -31,6 +32,9 @@ class DataSetGenerator(Dataset):
                                            self.image_paths[index],
                                            self.steering_angles[index])
 
+        # Pre-process.
+        img = crop(img)
+
         sample = {'img': img, 'steering_angle': steering_angle}
 
         if self.transform is not None:
@@ -45,17 +49,17 @@ class DataSetGenerator(Dataset):
         return self.steering_angles.shape[0]
 
 
-class PreProcessData(object):
-    """
-        Pre-process the data.
-    """
-    def __call__(self, sample):
-        img, steering_angle = sample['img'], sample['steering_angle']
-
-        img = crop(img)
-        img = resize(img)
-
-        return {'img': img, 'steering_angle': steering_angle}
+#class PreProcessData(object):
+#    """
+#        Pre-process the data.
+#    """
+#    def __call__(self, sample):
+#        img, steering_angle = sample['img'], sample['steering_angle']
+#
+#        img = crop(img)
+#        img = resize(img)
+#
+#        return {'img': img, 'steering_angle': steering_angle}
 
 
 class AugmentData(object):
@@ -147,7 +151,8 @@ def crop(image):
         Crop of the sky since it does not add
         useful information for the training.
     """
-    return image[65:, :]
+    image = image[65:, :]
+    return image
 
 
 def resize(image):
@@ -155,7 +160,8 @@ def resize(image):
         Resize the image size to the input format of
         the network.
     """
-    return skimage.transform.resize(image, (IMAGE_HEIGHT, IMAGE_WIDTH), mode='reflect').copy()
+    image = skimage.transform.resize(image, (IMAGE_HEIGHT, IMAGE_WIDTH), mode='reflect')
+    return image
 
 
 def random_brightness(image):
@@ -183,7 +189,7 @@ def random_flip(image, steering_angle):
     """
     choice = np.random.choice(2)
     if choice == 0:
-        return np.flip(image, axis=1).copy(), -steering_angle
+        return flip(image, 1), -steering_angle
     else:
         return image, steering_angle
 

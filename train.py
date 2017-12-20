@@ -17,7 +17,7 @@ def train():
     parser = argparse.ArgumentParser(description='Behavioral Cloning Training Program')
     parser.add_argument('-d', type=str,   help='data directory',   default='data', dest='data_dir')
     parser.add_argument('-l', type=float, help='learning rate',    default=0.001,  dest='learning_rate')
-    parser.add_argument('-b', type=int,   help='batch size',       default=20000,  dest='batch_size')
+    parser.add_argument('-b', type=int,   help='batch size',       default=40,  dest='batch_size')
     parser.add_argument('-e', type=int,   help='number of epochs', default=10,     dest='epochs')
 
     args = parser.parse_args()
@@ -25,7 +25,6 @@ def train():
     # Load, pre-process and augment data.
     data_set = utils.DataSetGenerator(data_dir=args.data_dir,
                                       transform=transforms.Compose([
-                                          utils.PreProcessData(),
                                           utils.AugmentData(),
                                           utils.ToTensor()
                                       ]))
@@ -50,9 +49,13 @@ def train():
             loss = criterion(steering_angle_out, steering_angle)
             loss.backward()
             optimizer.step()
+            if idx % 100 == 0:
+                print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+                    epoch, idx * len(img), len(data_loader.dataset),
+                    100. * idx / len(data_loader), loss.data[0]))
 
     # Save weights.
-    torch.save(model.state_dict(), 'train.pk1')
+    torch.save(model.state_dict(), 'train.pth')
 
 
 if __name__ == '__main__':
