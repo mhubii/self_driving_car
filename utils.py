@@ -4,12 +4,13 @@ import torch
 from torch.utils.data import Dataset
 import skimage.exposure
 import skimage.transform
+import skimage.color
 import skimage.io
 from cv2 import flip
 import os
 
 # INPUT_SHAPE as input for CNN.
-IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_CHANNELS = 95, 320, 3
+IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_CHANNELS = 75, 320, 3
 INPUT_SHAPE = (IMAGE_CHANNELS, IMAGE_HEIGHT, IMAGE_WIDTH)
 
 
@@ -32,9 +33,6 @@ class DataSetGenerator(Dataset):
                                            self.image_paths[index],
                                            self.steering_angles[index])
 
-        # Pre-process.
-        img = crop(img)
-
         sample = {'img': img, 'steering_angle': steering_angle}
 
         if self.transform is not None:
@@ -49,17 +47,17 @@ class DataSetGenerator(Dataset):
         return self.steering_angles.shape[0]
 
 
-#class PreProcessData(object):
-#    """
-#        Pre-process the data.
-#    """
-#    def __call__(self, sample):
-#        img, steering_angle = sample['img'], sample['steering_angle']
-#
-#        img = crop(img)
-#        img = resize(img)
-#
-#        return {'img': img, 'steering_angle': steering_angle}
+class PreProcessData(object):
+    """
+        Pre-process the data.
+    """
+    def __call__(self, sample):
+        img, steering_angle = sample['img'], sample['steering_angle']
+
+        img = crop(img)
+        img = normalize(img)
+
+        return {'img': img, 'steering_angle': steering_angle}
 
 
 class AugmentData(object):
@@ -93,7 +91,7 @@ class ToTensor(object):
 def load_data(data_dir):
     """
         Loads the input data and separates it into image_paths
-        and steering_angles.
+        and steering_angles.penis
 
     :return:
         image_paths: np.ndarray
@@ -132,9 +130,9 @@ def select_image(data_dir, image_file, steering_angle):
     img = load_image(data_dir, image_file)
 
     if 'left' in image_file:
-        steering_angle += 0.25
+        steering_angle += 0.2
     elif 'right' in image_file:
-        steering_angle -= 0.25
+        steering_angle -= 0.2
 
     return img, steering_angle
 
@@ -151,7 +149,7 @@ def crop(image):
         Crop of the sky since it does not add
         useful information for the training.
     """
-    image = image[65:, :]
+    image = image[60:135, :]
     return image
 
 
@@ -161,6 +159,14 @@ def resize(image):
         the network.
     """
     image = skimage.transform.resize(image, (IMAGE_HEIGHT, IMAGE_WIDTH), mode='reflect')
+    return image
+
+
+def normalize(image):
+    """
+        Normalizes the to [-1, 1].
+    """
+    image = image/255.
     return image
 
 

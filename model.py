@@ -14,26 +14,26 @@ class CNN(nn.Module):
         self.batch_size = batch_size
         self.features = nn.Sequential(
             nn.Conv2d(3, 8, 5, 2),
-            nn.ReLU(),
+            nn.ELU(),
             nn.Conv2d(8, 16, 5, 2),
-            nn.ReLU(),
+            nn.ELU(),
             nn.Conv2d(16, 32, 3, 2),
-            nn.ReLU(),
+            nn.ELU(),
             nn.Conv2d(32, 64, 3, 2),
-            nn.ReLU(),
+            nn.ELU(),
             nn.Conv2d(64, 64, 3, 2),
-            nn.ReLU()
+            nn.ELU(),
         )
 
         n = self._get_conv_output(input_shape)
 
         self.classification = nn.Sequential(
             nn.Linear(n, 32),
-            nn.ReLU(),
+            nn.ELU(),
             nn.Linear(32, 16),
-            nn.ReLU(),
+            nn.ELU(),
             nn.Linear(16, 8),
-            nn.ReLU(),
+            nn.ELU(),
             nn.Linear(8, 1)
         )
 

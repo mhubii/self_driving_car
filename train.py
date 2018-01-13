@@ -25,6 +25,7 @@ def train():
     # Load, pre-process and augment data.
     data_set = utils.DataSetGenerator(data_dir=args.data_dir,
                                       transform=transforms.Compose([
+                                          utils.PreProcessData(),
                                           utils.AugmentData(),
                                           utils.ToTensor()
                                       ]))
@@ -40,6 +41,8 @@ def train():
     optimizer = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
 
     # Train model.
+    best_loss = float('inf')
+
     for epoch in range(args.epochs):
         for idx, sample in enumerate(data_loader):
             img = Variable(sample['img'])
@@ -49,13 +52,16 @@ def train():
             loss = criterion(steering_angle_out, steering_angle)
             loss.backward()
             optimizer.step()
+
+            # Save weights.
+            if loss.data[0] < best_loss:
+                best_loss = loss.data[0]
+                torch.save(model.state_dict(), 'train.pth')
+
             if idx % 100 == 0:
                 print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                     epoch, idx * len(img), len(data_loader.dataset),
                     100. * idx / len(data_loader), loss.data[0]))
-
-    # Save weights.
-    torch.save(model.state_dict(), 'train.pth')
 
 
 if __name__ == '__main__':

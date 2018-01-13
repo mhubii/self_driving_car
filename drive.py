@@ -38,6 +38,7 @@ def telemetry(sid, data):
 
         # Crop the image.
         image_array = utils.crop(image_array)
+        image_array = utils.normalize(image_array)
 
         # Change HxWxC to CxHxW.
         image_array = np.swapaxes(image_array, 0, 2)
