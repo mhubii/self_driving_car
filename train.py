@@ -4,6 +4,7 @@ import torch.nn as nn
 from torchvision import transforms
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
+
 from model import CNN
 import utils
 
@@ -25,8 +26,8 @@ def train():
     # Load, pre-process and augment data.
     data_set = utils.DataSetGenerator(data_dir=args.data_dir,
                                       transform=transforms.Compose([
-                                          utils.PreProcessData(),
                                           utils.AugmentData(),
+                                          utils.PreProcessData(),
                                           utils.ToTensor()
                                       ]))
 

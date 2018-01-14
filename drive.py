@@ -36,13 +36,13 @@ def telemetry(sid, data):
         image = Image.open(BytesIO(base64.b64decode(imgString)))
         image_array = np.asarray(image)
 
-        # Crop the image.
+        # Pre-process the image.
         image_array = utils.crop(image_array)
+        image_array = utils.rgb_to_yuv(image_array)
         image_array = utils.normalize(image_array)
 
         # Change HxWxC to CxHxW.
-        image_array = np.swapaxes(image_array, 0, 2)
-        image_array = np.swapaxes(image_array, 1, 2)
+        image_array = np.transpose(image_array, (2, 0, 1))
 
         # Convert to torch.autograd.Variable.
         image_array = torch.from_numpy(image_array).float().unsqueeze(0)
