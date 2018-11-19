@@ -60,6 +60,7 @@ class PreProcessData(object):
 
         img = crop(img)
         img = rgb_to_yuv(img)
+        img = random_shadow(img)
         img = normalize(img)
 
         return {'img': img, 'steering_angle': steering_angle}
@@ -226,3 +227,33 @@ def random_translate(image, steering_angle, range_x, range_y):
     image = cv2.warpAffine(image, trans_m, (width, height))
 
     return image, steering_angle
+
+
+def random_shadow(image):
+    """
+        Add random shadow as trapeze between edge and x1/x2
+
+    """
+
+    if random.random() <= 1:
+
+        x1 = random.randint(50, 200)
+        x2 = random.randint(x1, x1 + 80)
+        while x2 == x1:
+            x2 = random.randint(x1, x1 + 80)
+        step = np.float32(abs(x1 - x2)) / 75.
+
+        array = np.arange(x1, x2, step)
+
+        if random.random() < 0.5:
+            array = np.flipud(array)
+        array = np.array(array, dtype=int)
+
+        if random.random() <= 0.5:
+            for i in range(IMAGE_HEIGHT):
+                image[i, 0:array[i], 0] = np.random.randint(0, 5, array[i])
+        else:
+            for i in range(IMAGE_HEIGHT):
+                image[i, array[i]:IMAGE_WIDTH, 0] = np.random.randint(0,5, IMAGE_WIDTH - array[i])
+
+    return image
