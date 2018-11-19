@@ -22,7 +22,7 @@ The convolutional network is trained in a supervised manner using backpropagatio
 
 <br>
 <figure>
-  <p align="center"><img src="img/pipeline.png" width="40%" height="40%" hspace="40"></p>
+  <p align="center"><img src="img/pipeline.png" width="80%" height="80%" hspace="40"></p>
   <figcaption>Fig. 2: Training pipeline.  </figcaption>
 </figure>
 <br><br>
@@ -32,7 +32,7 @@ The architecture of the convolutional net takes RGB images as input in a first l
 
 <br>
 <figure>
-  <p align="center"><img src="img/network.png" width="40%" height="40%" hspace="40"></p>
+  <p align="center"><img src="img/network.png" width="80%" height="80%" hspace="40"></p>
   <figcaption>Fig. 3: Network architecture.  </figcaption>
 </figure>
 <br><br>
