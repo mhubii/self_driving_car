@@ -9,8 +9,8 @@ The data to train the neural net can be simply obtained within the given environ
 
 <br>
 <figure>
-  <p align="center"><img src="img/game_menu.PNG" width="20%" height="20%" hspace="40"><img src="img/game_racetrack.png" width="20%" height="20%" hspace="40"></p>
-  <figcaption>Fig. 4: (Left) Radon transform using only 25% dose. (Center) Inpainted radon transform using a DCGAN. (Right) Inpainted radon transform using an AE. </figcaption>
+  <p align="center"><img src="img/game_menu.PNG" width="40%" height="40%" hspace="40"><img src="img/game_racetrack.PNG" width="40%" height="40%" hspace="40"></p>
+  <figcaption>Fig. 1: (Left) Game menu. (Right) Racetrack. </figcaption>
 </figure>
 <br><br>
 
