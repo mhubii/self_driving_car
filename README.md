@@ -7,11 +7,11 @@ As environment we use a car driving simulation built by Udacity. The simulation 
 ## The Data
 The data to train the neural net can be simply obtained within the given environment. Therefore we start the game in training mode
 
-![Game Menu](/img/game_menu.PNG)
+![Game Menu](/img/game_menu.png)
 
 and record the data within the game.
 
-![Game Racetrack](/img/game_racetrack.PNG)
+![Game Racetrack](/img/game_racetrack.png)
 
 ## The Network
 Our network architecture for the self-driving car is based on the [End to End Learning for Self-Driving Cars](https://arxiv.org/pdf/1604.07316.pdf "Link to Paper") paper which was released by NVIDIA. Note that all of the following pictures are taken from the paper as well.
@@ -19,15 +19,13 @@ Our network architecture for the self-driving car is based on the [End to End Le
 ### Training
 The convolutional network is trained in a supervised manner using backpropagation. It therefore predicts the steering angle and the acceleration from the recorded input images. Then, the error between predicted actions and actions, which correspond to the recorded input images, is computed.
 
-![Training](/img/training.PNG)
+![Training](/img/pipeline.png)
 
 
 ### Architecture
 The architecture of the convolutional net takes RGB images as input in a first layer. After normalization, the problem dimension is subsequentially reduced by a number of convolutional layers until the filters are sufficient to extract actions by regression from them. The regression is performed by a stack of fully connected layers.
 
-![Architecture](/img/net_architecture.PNG)
+![Architecture](/img/network.png)
 
 ### Prediction
 After the network has been successfully trained, one predicts actions only by the frontal input image.
-
-![Prediction](/img/prediction.PNG)
