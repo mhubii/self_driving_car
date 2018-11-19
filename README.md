@@ -7,11 +7,11 @@ As environment we use a car driving simulation built by Udacity. The simulation 
 ## The Data
 The data to train the neural net can be simply obtained within the given environment. Therefore we start the game in training mode
 
-![Game Menu](/img/game_menu.png)
+![Game Menu](/img/game_menu.PNG)
 
 and record the data within the game.
 
-![Game Racetrack](/img/game_racetrack.png)
+![Game Racetrack](/img/game_racetrack.PNG)
 
 ## The Network
 Our network architecture for the self-driving car is based on the [End to End Learning for Self-Driving Cars](https://arxiv.org/pdf/1604.07316.pdf "Link to Paper") paper which was released by NVIDIA. Note that all of the following pictures are taken from the paper as well.
