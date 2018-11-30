@@ -98,7 +98,7 @@ class ToTensor(object):
 def load_data(data_dir):
     """
         Loads the input data and separates it into image_paths
-        and steering_angles.penis
+        and steering_angles.
 
     :return:
         image_paths: np.ndarray
